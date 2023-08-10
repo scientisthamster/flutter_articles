@@ -1,12 +1,11 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter_articles/exceptions/http_exception.dart';
 import 'package:flutter_articles/services/http/http_service.dart';
 
 class DioHttpService implements HttpService {
-  @visibleForTesting
-  Dio? dio;
+  Dio get dio => Dio(baseOptions);
 
   @override
   String get baseUrl => 'https://dev.to/api/';
@@ -25,52 +24,59 @@ class DioHttpService implements HttpService {
       );
 
   @override
-  Future get({
+  Future<Response> get({
     required String endpoint,
     Map<String, dynamic>? queryParameters,
   }) async {
-    if (queryParameters != null) {
-      log('Request query parameters: $queryParameters');
-    }
+    log('Get request to:${dio.options.baseUrl + endpoint}\nparams: $queryParameters');
+    Response response = await dio.get(
+      endpoint,
+      queryParameters: queryParameters,
+    );
 
-    Dio _dio = dio ?? Dio(baseOptions);
-    log('Get request to: ${_dio.options.baseUrl + endpoint}');
-
-    try {
-      Response response = await _dio.get(
-        endpoint,
-        queryParameters: queryParameters,
+    if (response.data == null || response.statusCode != 200) {
+      throw HttpException(
+        title: 'Http Error!',
+        message: response.statusMessage,
+        statusCode: response.statusCode,
       );
-    } on DioException catch (_) {
-      rethrow;
     }
+
+    return response;
   }
 
   @override
-  Future post({
+  Future<Response> post({
     required String endpoint,
     Map<String, dynamic>? queryParameters,
   }) async {
-    if (queryParameters != null) {
-      log('Request query parameters: $queryParameters');
-    }
+    log('Post request to: ${dio.options.baseUrl + endpoint}\nparams: $queryParameters');
 
-    Dio _dio = dio ?? Dio(baseOptions);
-    log('Get request to: ${_dio.options.baseUrl + endpoint}');
+    Response response = await dio.post(
+      endpoint,
+      queryParameters: queryParameters,
+    );
 
-    try {
-      Response response = await _dio.post(
-        endpoint,
-        queryParameters: queryParameters,
+    if (response.data == null || response.statusCode != 200) {
+      throw HttpException(
+        title: 'Http Error!',
+        message: response.statusMessage,
+        statusCode: response.statusCode,
       );
-    } on DioException catch (_) {
-      rethrow;
     }
+
+    return response;
   }
 
   @override
-  Future put() async {}
+  Future put() {
+    // TODO implement put
+    throw UnimplementedError();
+  }
 
   @override
-  Future delete() async {}
+  Future delete() {
+    // TODO implement delete
+    throw UnimplementedError();
+  }
 }
