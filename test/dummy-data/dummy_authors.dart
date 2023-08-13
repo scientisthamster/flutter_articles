@@ -1,6 +1,6 @@
 import 'package:flutter_articles/models/author.dart';
 
-class DummyAuthor {
+class DummyAuthors {
   static const Author dummyAuthor1 = Author(name: 'ivan');
 
   static const Author dummyAuthor2 = Author(name: 'sofi');

@@ -6,18 +6,18 @@ import '../dummy-data/dummy_articles.dart';
 void main() {
   group('Article model tests', () {
     test('Support Value Equality', () {
-      expect(DummyArticle.dummyArticle1, isNot(DummyArticle.dummyArticle2));
-      expect(DummyArticle.dummyArticle1, equals(DummyArticle.dummyArticle1));
+      expect(DummyArticles.dummyArticle1, isNot(DummyArticles.dummyArticle2));
+      expect(DummyArticles.dummyArticle1, equals(DummyArticles.dummyArticle1));
     });
 
     test('fromJson returns correct model', () {
       expect(
-        Article.fromJson(DummyArticle.dummyRawArticle1),
-        equals(DummyArticle.dummyArticle1),
+        Article.fromJson(DummyArticles.dummyRawArticle1),
+        equals(DummyArticles.dummyArticle1),
       );
       expect(
-        Article.fromJson(DummyArticle.dummyRawArticle2),
-        isNot(DummyArticle.dummyArticle1),
+        Article.fromJson(DummyArticles.dummyRawArticle2),
+        isNot(DummyArticles.dummyArticle1),
       );
     });
   });

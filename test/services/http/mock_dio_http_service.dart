@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter_articles/services/http/dio_http_service.dart';
 import 'package:http_mock_adapter/http_mock_adapter.dart';
 
+import '../../dummy-data/dummy_articles.dart';
+
 class MockDioHttpService extends DioHttpService {
   DioAdapter dioAdapter = DioAdapter(
     dio: Dio(
@@ -20,12 +22,14 @@ class MockDioHttpService extends DioHttpService {
 class MockRequest {
   final int statusCode;
   final String route;
-  final Map<String, dynamic> response;
+  final dynamic response;
+  final Map<String, dynamic>? queryParameters;
 
   MockRequest({
     required this.statusCode,
     required this.route,
     required this.response,
+    this.queryParameters,
   });
 }
 
@@ -36,6 +40,25 @@ List<MockRequest> mockGetRequests = [
     response: {'data': 'Success get request!'},
   ),
   MockRequest(
+    statusCode: 200,
+    route: 'articles',
+    queryParameters: {
+      'tag': 'flutter, dart',
+    },
+    response: DummyArticles.dummyRawArticlesResponse,
+  ),
+  MockRequest(
+    statusCode: 200,
+    route: 'articles',
+    queryParameters: {'username': 'aqueel'},
+    response: DummyArticles.dummyRawAuthorArticlesResponse,
+  ),
+  MockRequest(
+    statusCode: 200,
+    route: 'article/${DummyArticles.dummyRawArticleDetails['id']}',
+    response: DummyArticles.dummyRawArticleDetails,
+  ),
+  MockRequest(
     statusCode: 401,
     route: '401-get-request-test',
     response: {'statusMessage': 'Unauthorized'},
@@ -44,7 +67,7 @@ List<MockRequest> mockGetRequests = [
     statusCode: 404,
     route: '404-get-request-test',
     response: {'statusMessage': 'Not Found'},
-  )
+  ),
 ];
 
 List<MockRequest> mockPostRequest = [
@@ -62,7 +85,7 @@ List<MockRequest> mockPostRequest = [
     statusCode: 404,
     route: '404-post-request-test',
     response: {'statusMessage': 'Not Found'},
-  )
+  ),
 ];
 
 void registerMockRequest(DioAdapter dioAdapter) {
@@ -73,6 +96,7 @@ void registerMockRequest(DioAdapter dioAdapter) {
         request.statusCode,
         request.response,
       ),
+      queryParameters: request.queryParameters,
     );
   }
 
