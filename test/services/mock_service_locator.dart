@@ -3,12 +3,12 @@ import 'package:get_it/get_it.dart';
 
 import 'http/mock_dio_http_service.dart';
 
-final getIt = GetIt.instance;
+final mockGetIt = GetIt.instance;
 
 void setupMockServiceLocator() {
-  getIt.registerSingleton<HttpService>(MockDioHttpService());
+  mockGetIt.registerSingleton<HttpService>(MockDioHttpService());
 }
 
 Future resetMockServiceLocator() async {
-  await getIt.reset();
+  await mockGetIt.reset();
 }

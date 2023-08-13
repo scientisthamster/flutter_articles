@@ -9,16 +9,16 @@ import 'mock_dio_http_service.dart';
 
 void main() {
   group('DioHttpService tests', () {
-    late HttpService httpService;
+    late HttpService mockHttpService;
 
     setUp(() {
       setupMockServiceLocator();
-      httpService = getIt<HttpService>();
+      mockHttpService = mockGetIt<HttpService>();
     });
 
     test('Return correct Dio clients', () async {
       final Response response =
-          await httpService.get(endpoint: '200-get-request-test');
+          await mockHttpService.get(endpoint: '200-get-request-test');
 
       expect(
         response.requestOptions.baseUrl,
@@ -32,7 +32,7 @@ void main() {
 
     test('Get request with statusCode = 200', () async {
       final Response response =
-          await httpService.get(endpoint: '200-get-request-test');
+          await mockHttpService.get(endpoint: '200-get-request-test');
 
       expect(response.statusCode, 200);
       expect(response.data, {'data': 'Success get request!'});
@@ -40,14 +40,14 @@ void main() {
 
     test('Get request with statusCode = 401', () async {
       expectLater(
-        () async => await httpService.get(endpoint: '401-get-request-test'),
+        () async => await mockHttpService.get(endpoint: '401-get-request-test'),
         throwsA(
           isA<HttpException>(),
         ),
       );
 
       try {
-        await httpService.get(endpoint: '401-get-request-test');
+        await mockHttpService.get(endpoint: '401-get-request-test');
       } on HttpException catch (exception) {
         expect(exception.title, 'Http Error!');
         expect(exception.statusCode, 401);
@@ -56,12 +56,12 @@ void main() {
 
     test('Get request with statusCode = 404', () async {
       expectLater(
-        () async => await httpService.get(endpoint: '404-get-request-test'),
+        () async => await mockHttpService.get(endpoint: '404-get-request-test'),
         throwsA(isA<HttpException>()),
       );
 
       try {
-        await httpService.get(endpoint: '404-get-request-test');
+        await mockHttpService.get(endpoint: '404-get-request-test');
       } on HttpException catch (exception) {
         expect(exception.title, 'Http Error!');
         expect(exception.statusCode, 404);
@@ -70,7 +70,7 @@ void main() {
 
     test('Post request with statusCode = 200', () async {
       final Response response =
-          await httpService.post(endpoint: '200-post-request-test');
+          await mockHttpService.post(endpoint: '200-post-request-test');
 
       expect(response.statusCode, 200);
       expect(response.data, {'data': 'Success post request!'});
@@ -78,14 +78,14 @@ void main() {
 
     test('Post request with statusCode = 401', () async {
       expectLater(
-        () async => await httpService.post(endpoint: '401-post-request-test'),
+        () async => await mockHttpService.post(endpoint: '401-post-request-test'),
         throwsA(
           isA<HttpException>(),
         ),
       );
 
       try {
-        await httpService.post(endpoint: '401-post-request-test');
+        await mockHttpService.post(endpoint: '401-post-request-test');
       } on HttpException catch(exception) {
         expect(exception.title, 'Http Error!');
         expect(exception.statusCode, 401);
@@ -94,14 +94,14 @@ void main() {
 
     test('Post request with statusCode = 404', () async {
       expectLater(
-        () async => await httpService.post(endpoint: '404-post-request-test'),
+        () async => await mockHttpService.post(endpoint: '404-post-request-test'),
         throwsA(
           isA<HttpException>(),
         ),
       );
 
       try {
-        await httpService.post(endpoint: '404-post-request-test');
+        await mockHttpService.post(endpoint: '404-post-request-test');
       } on HttpException catch(exception) {
         expect(exception.title, 'Http Error!');
         expect(exception.statusCode, 404);
@@ -110,13 +110,13 @@ void main() {
 
     test('Unimplemented methods', () async {
       expectLater(
-        () async => await httpService.put(),
+        () async => await mockHttpService.put(),
         throwsA(
           isA<UnimplementedError>(),
         ),
       );
       expectLater(
-        () async => await httpService.delete(),
+        () async => await mockHttpService.delete(),
         throwsA(
           isA<UnimplementedError>(),
         ),
