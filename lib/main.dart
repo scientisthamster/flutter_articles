@@ -1,22 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_articles/home/pages/home_page.dart';
+import 'package:flutter_articles/presentation/styles/app_themes.dart';
+import 'package:flutter_articles/repositories/article_repository.dart';
+import 'package:flutter_articles/services/http/http_service.dart';
+import 'package:flutter_articles/services/service_locator.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  setupServiceLocator();
+  final HttpService httpService = getIt<HttpService>();
+  runApp(
+    App(
+      httpService: httpService,
+    ),
+  );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class App extends StatelessWidget {
+  final HttpService httpService;
+
+  const App({
+    super.key,
+    required this.httpService,
+  });
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Articles',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => HttpArticleRepository(httpService),
+        ),
+      ],
+      child: MaterialApp(
+        title: 'Flutter Articles',
+        debugShowCheckedModeBanner: false,
+        theme: AppThemes.mainTheme(),
+        themeMode: ThemeMode.system,
+        darkTheme: AppThemes.mainTheme(isDark: true),
+        home: const HomePage(),
       ),
-      home: const HomePage(),
     );
   }
 }
