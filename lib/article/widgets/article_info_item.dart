@@ -20,6 +20,9 @@ class ArticleInfoItem extends StatelessWidget {
           color:
               Theme.of(context).textTheme.bodyMedium!.color!.withOpacity(0.5),
         ),
+        const SizedBox(
+          width: 6.0,
+        ),
         Text(
           text,
           style: TextStyle(

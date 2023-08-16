@@ -13,7 +13,7 @@ class ArticlesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
+      padding: const EdgeInsets.symmetric(vertical: 20.0),
       itemCount: articles.length,
       itemBuilder: (context, index) => ArticleCard(
         article: articles[index],

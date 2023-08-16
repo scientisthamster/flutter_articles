@@ -3,25 +3,20 @@ import 'package:flutter_articles/models/article.dart';
 import 'package:flutter_articles/presentation/styles/app_colors.dart';
 import 'package:flutter_articles/presentation/widgets/app_cached_network_image.dart';
 
-class ArticleCardFooter extends StatelessWidget {
+class ArticleAuthor extends StatelessWidget {
   final Article article;
 
-  const ArticleCardFooter({
+  const ArticleAuthor({
     super.key,
     required this.article,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Padding(
       padding: const EdgeInsets.symmetric(
-        horizontal: 20.0,
-        vertical: 10.0,
-      ),
-      decoration: BoxDecoration(
-        color: AppColors.primary.withOpacity(0.3),
-        borderRadius: const BorderRadius.only(
-            bottomRight: Radius.circular(15), bottomLeft: Radius.circular(15)),
+        horizontal: 16.0,
+        vertical: 6.0,
       ),
       child: Row(
         children: [
