@@ -37,7 +37,7 @@ class HttpArticleRepository with ChangeNotifier implements ArticleRepository {
     }
 
     final Response response = await httpService.get(
-      endpoint: 'articles',
+      'articles',
       queryParameters: queryParameters,
     );
 
@@ -48,7 +48,7 @@ class HttpArticleRepository with ChangeNotifier implements ArticleRepository {
 
   @override
   Future<Article> getArticle({required int id}) async {
-    final Response response = await httpService.get(endpoint: 'article/$id');
+    final Response response = await httpService.get('article/$id');
     return Article.fromJson(response.data);
   }
 }

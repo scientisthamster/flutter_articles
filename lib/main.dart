@@ -1,19 +1,26 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_articles/home/pages/home_page.dart';
 import 'package:flutter_articles/presentation/styles/app_themes.dart';
 import 'package:flutter_articles/repositories/article_repository.dart';
 import 'package:flutter_articles/services/http/http_service.dart';
 import 'package:flutter_articles/services/service_locator.dart';
+import 'package:flutter_articles/services/storage/storage_service.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  setupServiceLocator();
-  final HttpService httpService = getIt<HttpService>();
-  runApp(
-    App(
-      httpService: httpService,
-    ),
-  );
+  runZonedGuarded<Future<void>>(() async {
+    setupServiceLocator();
+    final HttpService httpService = getIt<HttpService>();
+    final StorageService storageService = getIt<StorageService>();
+    await storageService.init();
+    runApp(
+      App(
+        httpService: httpService,
+      ),
+    );
+  }, (error, stack) => throw error);
 }
 
 class App extends StatelessWidget {
