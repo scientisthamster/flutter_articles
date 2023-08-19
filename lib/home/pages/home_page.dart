@@ -22,7 +22,7 @@ class HomePage extends StatelessWidget {
       body: HttpPageWrapper<List<Article>>(
           dataRequest: () async =>
               await articleRepository.getArticles(tags: ['flutter', 'dart']),
-          contentBuilder: (context, articles) {
+          contentBuilder: (BuildContext context, List<Article> articles) {
             return ArticlesList(articles: articles);
           }),
     );
