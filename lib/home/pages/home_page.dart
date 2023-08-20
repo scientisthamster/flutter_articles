@@ -20,11 +20,12 @@ class HomePage extends StatelessWidget {
         actions: const [AppBarFlutterLogo()],
       ),
       body: HttpPageWrapper<List<Article>>(
-          dataRequest: () async =>
-              await articleRepository.getArticles(tags: ['flutter', 'dart']),
-          contentBuilder: (BuildContext context, List<Article> articles) {
-            return ArticlesList(articles: articles);
-          }),
+        dataRequest: () async =>
+            await articleRepository.getArticles(tags: ['flutter', 'dart']),
+        contentBuilder: (BuildContext context, List<Article> articles) {
+          return ArticlesList(articles: articles);
+        },
+      ),
     );
   }
 }

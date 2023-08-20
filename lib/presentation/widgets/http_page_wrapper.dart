@@ -23,11 +23,12 @@ class HttpPageWrapper<T> extends StatefulWidget {
 }
 
 class _HttpPageWrapperState<T> extends State<HttpPageWrapper> {
-  final StreamController<T> streamController = StreamController();
+  final StreamController<T> streamController = StreamController<T>();
 
   Future<void> _getData() async {
     try {
       T data = await widget.dataRequest();
+      streamController.add(data);
     } catch (e) {
       streamController.addError(e);
       rethrow;

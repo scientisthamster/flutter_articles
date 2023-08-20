@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_articles/models/article.dart';
 import 'package:flutter_articles/services/http/http_service.dart';
@@ -36,19 +35,19 @@ class HttpArticleRepository with ChangeNotifier implements ArticleRepository {
       queryParameters['tag'] = tags?.join(', ');
     }
 
-    final Response response = await httpService.get(
+    final response = await httpService.get(
       'articles',
       queryParameters: queryParameters,
     );
 
     return List<Article>.from(
-      response.data.map((json) => Article.fromJson(json)),
+      response.map((json) => Article.fromJson(json)),
     );
   }
 
   @override
   Future<Article> getArticle({required int id}) async {
-    final Response response = await httpService.get('articles/$id');
-    return Article.fromJson(response.data);
+    final response = await httpService.get('articles/$id');
+    return Article.fromJson(response);
   }
 }

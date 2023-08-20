@@ -32,7 +32,7 @@ class DioHttpService implements HttpService {
       );
 
   @override
-  Future<Response> get(
+  Future<dynamic> get(
     String endpoint, {
     Map<String, dynamic>? queryParameters,
     bool forceRefresh = false,
@@ -98,7 +98,7 @@ class DioHttpService implements HttpService {
   }
 
   @override
-  getFromCache(String endpoint, {Map<String, dynamic>? queryParameters}) {
+  dynamic getFromCache(String endpoint, {Map<String, dynamic>? queryParameters}) {
     final storageKey =
         getRequestStorageKey(endpoint, queryParameters: queryParameters);
 
@@ -116,7 +116,7 @@ class DioHttpService implements HttpService {
   }
 
   @override
-  getFromNetwork(String endpoint,
+  Future<dynamic> getFromNetwork(String endpoint,
       {Map<String, dynamic>? queryParameters}) async {
     Response response =
         await dio.get(endpoint, queryParameters: queryParameters);

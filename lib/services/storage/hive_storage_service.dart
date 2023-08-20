@@ -24,7 +24,7 @@ class HiveStorageService implements StorageService {
   getAll() => hiveBox.values.toList();
 
   @override
-  Future<void> clear() async => hiveBox.clear();
+  Future<void> clear() async => await hiveBox.clear();
 
   @override
   bool has(String key) => hiveBox.containsKey(key);
@@ -33,5 +33,5 @@ class HiveStorageService implements StorageService {
   Future<void> set(String? key, value) async => hiveBox.put(key, value);
 
   @override
-  Future<void> close() async => hiveBox.close();
+  Future<void> close() async => await hiveBox.close();
 }
