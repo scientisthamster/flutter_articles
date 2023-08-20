@@ -14,7 +14,8 @@ class ArticleCoverImage extends StatelessWidget {
     return AppCachedNetworkImage(
       imageUrl: url,
       height: 220.0,
-      width: double.infinity,
+      width: MediaQuery.of(context).size.width,
+      fit: BoxFit.fill,
     );
   }
 }

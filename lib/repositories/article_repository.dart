@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_articles/models/article.dart';
+import 'package:flutter_articles/models/http_response.dart';
 import 'package:flutter_articles/services/http/http_service.dart';
 
 abstract class ArticleRepository {
@@ -19,6 +20,8 @@ class HttpArticleRepository with ChangeNotifier implements ArticleRepository {
 
   HttpArticleRepository(this.httpService);
 
+  bool isOffline = false;
+
   @override
   Future<List<Article>> getArticles({
     List<String>? tags,
@@ -35,19 +38,33 @@ class HttpArticleRepository with ChangeNotifier implements ArticleRepository {
       queryParameters['tag'] = tags?.join(', ');
     }
 
-    final response = await httpService.get(
+    final HttpResponse response = await httpService.get(
       'articles',
       queryParameters: queryParameters,
+      forceRefresh: forceRefresh,
     );
 
+    isOffline = response.isOffline;
+    notifyListeners();
+
     return List<Article>.from(
-      response.map((json) => Article.fromJson(json)),
+      response.data.map((json) => Article.fromJson(json)),
     );
   }
 
   @override
-  Future<Article> getArticle({required int id}) async {
-    final response = await httpService.get('articles/$id');
-    return Article.fromJson(response);
+  Future<Article> getArticle({
+    required int id,
+    bool forceRefresh = false,
+  }) async {
+    final HttpResponse response = await httpService.get(
+      'articles/$id',
+      forceRefresh: forceRefresh,
+    );
+
+    isOffline = response.isOffline;
+    notifyListeners();
+
+    return Article.fromJson(response.data);
   }
 }

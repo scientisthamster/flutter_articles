@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_articles/exceptions/http_exception.dart';
 import 'package:flutter_articles/models/cached_response.dart';
+import 'package:flutter_articles/models/http_response.dart';
 import 'package:flutter_articles/services/http/http_service.dart';
 import 'package:flutter_articles/services/storage/storage_service.dart';
 
@@ -32,31 +32,34 @@ class DioHttpService implements HttpService {
       );
 
   @override
-  Future<dynamic> get(
+  Future<HttpResponse<dynamic>> get(
     String endpoint, {
     Map<String, dynamic>? queryParameters,
     bool forceRefresh = false,
   }) async {
-    log('Get request to:${dio.options.baseUrl + endpoint}\nparams: $queryParameters');
+    log('Get Request to: ${dio.options.baseUrl + endpoint}${queryParameters != null ? ' | params: $queryParameters' : ''}');
 
     final dynamic cachedResponse =
         getFromCache(endpoint, queryParameters: queryParameters);
     if (!forceRefresh && cachedResponse != null) {
       log('Getting response from cache');
-      return cachedResponse;
+      return HttpResponse(data: cachedResponse);
     }
 
     try {
       final response =
           await getFromNetwork(endpoint, queryParameters: queryParameters);
-      return response;
-    } on SocketException catch (_) {
+      return HttpResponse(data: response);
+    } catch (e) {
       if (cachedResponse != null) {
-        log('No Internet Connection! Getting response from cache');
-        return cachedResponse;
+        log('An Error Occurred! Getting response from cache');
+        return HttpResponse(
+          data: cachedResponse,
+          isOffline: true,
+        );
       } else {
         throw HttpException(
-          title: 'No internet connection and no cached response',
+          title: 'An Error Occurred and no cached response',
         );
       }
     }
@@ -98,7 +101,8 @@ class DioHttpService implements HttpService {
   }
 
   @override
-  dynamic getFromCache(String endpoint, {Map<String, dynamic>? queryParameters}) {
+  dynamic getFromCache(String endpoint,
+      {Map<String, dynamic>? queryParameters}) {
     final storageKey =
         getRequestStorageKey(endpoint, queryParameters: queryParameters);
 
