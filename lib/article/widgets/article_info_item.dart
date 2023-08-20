@@ -26,9 +26,11 @@ class ArticleInfoItem extends StatelessWidget {
         Text(
           text,
           style: TextStyle(
-            color:
-                Theme.of(context).textTheme.bodyMedium!.color!.withOpacity(0.5),
-          ),
+              color: Theme.of(context)
+                  .textTheme
+                  .bodyMedium!
+                  .color!
+                  .withOpacity(0.5)),
         ),
       ],
     );

@@ -22,10 +22,18 @@ class ArticleInfo extends StatelessWidget {
         vertical: isMin ? 10.0 : 20.0,
       ),
       decoration: BoxDecoration(
-        border: isMin ? null : Border(
-          bottom: BorderSide(width: 0.5, color: Theme.of(context).dividerColor.withOpacity(0.3)),
-        ),
-        color: isMin ? Theme.of(context).brightness == Brightness.light ? AppColors.grayLight : AppColors.white.withOpacity(0.2) : null,
+        border: isMin
+            ? null
+            : Border(
+                bottom: BorderSide(
+                    width: 0.5,
+                    color: Theme.of(context).dividerColor.withOpacity(0.3)),
+              ),
+        color: isMin
+            ? Theme.of(context).brightness == Brightness.light
+                ? AppColors.grayLight
+                : AppColors.white.withOpacity(0.2)
+            : null,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

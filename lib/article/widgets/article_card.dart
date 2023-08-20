@@ -20,14 +20,17 @@ class ArticleCard extends StatelessWidget {
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => ArticlePage(id: article.id),
+            builder: (context) => ArticlePage(
+              id: article.id,
+              articleTitle: article.title,
+            ),
           ),
         );
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ArticleAuthor(article: article),
+          ArticleAuthor(article),
           if (article.coverImage != null)
             ArticleCoverImage(url: article.coverImage!),
           if (article.coverImage != null) ArticleTags(tags: article.tags),

@@ -12,10 +12,12 @@ import 'package:provider/provider.dart';
 
 class ArticlePage extends StatelessWidget {
   final int id;
+  final String articleTitle;
 
   const ArticlePage({
     super.key,
     required this.id,
+    required this.articleTitle,
   });
 
   @override
@@ -25,7 +27,12 @@ class ArticlePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Flutter Articles'),
+        title: Text(
+          articleTitle,
+          style: const TextStyle(
+            fontSize: 24.0,
+          ),
+        ),
         actions: const [AppBarFlutterLogo()],
       ),
       body: SafeArea(
@@ -44,7 +51,7 @@ class ArticlePage extends StatelessWidget {
                     article,
                     isMin: true,
                   ),
-                  ArticleAuthor(article: article),
+                  ArticleAuthor(article),
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 17, vertical: 20),
