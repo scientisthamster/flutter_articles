@@ -14,15 +14,16 @@ void main() {
     late HttpService mockHttpService;
     late StorageService mockStorageService;
 
-    setUp(() {
+    setUp(() async {
       setupMockServiceLocator();
       mockHttpService = mockGetIt<HttpService>();
       mockStorageService = mockGetIt<StorageService>();
+      await mockStorageService.init();
     });
 
     test('Return correct Dio clients', () async {
       final Response response =
-          await mockHttpService.post('200-get-request-test');
+          await mockHttpService.post('200-post-request-test');
       expect(
         response.requestOptions.baseUrl,
         equals(MockDioHttpService(mockStorageService).dio.options.baseUrl),
@@ -51,8 +52,7 @@ void main() {
       try {
         await mockHttpService.get('401-get-request-test');
       } on HttpException catch (exception) {
-        expect(exception.title, 'Http Error!');
-        expect(exception.statusCode, 401);
+        expect(exception.title, 'An Error Occurred and no cached response');
       }
     });
 
@@ -65,8 +65,7 @@ void main() {
       try {
         await mockHttpService.get('404-get-request-test');
       } on HttpException catch (exception) {
-        expect(exception.title, 'Http Error!');
-        expect(exception.statusCode, 404);
+        expect(exception.title, 'An Error Occurred and no cached response');
       }
     });
 

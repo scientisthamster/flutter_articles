@@ -1,6 +1,7 @@
 import 'package:flutter_articles/models/article.dart';
 import 'package:flutter_articles/repositories/article_repository.dart';
 import 'package:flutter_articles/services/http/http_service.dart';
+import 'package:flutter_articles/services/storage/storage_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../dummy-data/dummy_articles.dart';
@@ -10,11 +11,14 @@ void main() {
   group('ArticleRepository tests', () {
     late HttpService mockHttpService;
     late HttpArticleRepository mockArticleRepository;
+    late StorageService mockStorageService;
 
-    setUp(() {
+    setUp(() async {
       setupMockServiceLocator();
       mockHttpService = mockGetIt<HttpService>();
       mockArticleRepository = HttpArticleRepository(mockHttpService);
+      mockStorageService = mockGetIt<StorageService>();
+      await mockStorageService.init();
     });
 
     group('Article Requests', () {
